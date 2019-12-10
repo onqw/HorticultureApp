@@ -60,7 +60,7 @@ app.get('/showAllFlowers',(req,res) =>{
 	  if (err) {
 	    return res.send(err);
 	  }
-	  //console.log(row);
+	  console.log(row.length);
     return res.json({data: row});
 	});
 });

@@ -3,16 +3,40 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import Modalin from './components/inputModal.js';
 
 class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       flowers: [],
-      selected: {'flower':'','name':'someone'},
+      selected: {'flower':'','name':''},
       tenRecent: []
     }
   }
+
+  separate = {padding:'5px',
+    borderBottom:'1px solid black'}
+
+  boldCenter = {textAlign:'center', fontWeight:'bold'}
+
+  center = {textAlign:'center'}
+
+  rowBorder = {
+    border:'1px solid #000000',
+    color:"Blue",
+    backgroundColor:"white"}
+
+  scrollAble = {height:(1.5*window.innerHeight/3),
+    overflow:'hidden',overflowY:'scroll',
+    borderTop:'1px solid black',
+    borderBottom:'1px solid black',
+    borderRight:'1px solid black'}
+
+  lists10 = {minHeight:(1.5*window.innerHeight/3),
+    borderTop:'1px solid black',
+    borderBottom:'1px solid black',
+    borderRight:'1px solid black'}
 
   componentDidMount(){
     this.getFlower();
@@ -34,12 +58,7 @@ class App extends React.Component {
     //correctly sets tenRecent
   }
 
-  boldCenter = {textAlign:'center', fontWeight:'bold'}
-  rowBorder = {
-    border:'1px solid #000000',
-    color:"Blue",
-    backgroundColor:"white",
-  }
+  
   renderFlower= ({GENUS, SPECIES, COMNAME}) => (
   <Button key={COMNAME} style={this.rowBorder} block
     onClick={e => (
@@ -56,8 +75,7 @@ class App extends React.Component {
   
   )
 
-  separate = {padding:'5px',
-  borderBottom:'1px solid black'}
+  
 
   render10Recent= ({NAME, PERSON, LOCATION, SIGHTED}) => (
       <Row>
@@ -67,17 +85,10 @@ class App extends React.Component {
       </Row>
     
     )
-  scrollAble = {height:(2*window.innerHeight/3 - 20),
-  overflow:'hidden',overflowY:'scroll',
-  borderTop:'1px solid black',
-  borderBottom:'1px solid black',
-  borderRight:'1px solid black'}
 
-  lists10 = {height:(2*window.innerHeight/3 - 20),
-    borderTop:'1px solid black',
-    borderBottom:'1px solid black',
-    borderRight:'1px solid black',}
+  
  
+
   render(){
     
     const { flowers, selected, tenRecent } =this.state;
@@ -86,9 +97,16 @@ class App extends React.Component {
         <Row>
           <Col xs={12}>
             <Row>
-              <div style={{fontWeight:'bold', padding:'1rem'}}>
-                Currently Selected Flower: {selected.flower /* Does not update*/}
-              </div>
+              <Col xs={4} >
+                <Row style={{fontWeight:'bold', paddingLeft:'20px'}}>Currently Selected Flower:</Row>
+                 <Row style={{paddingLeft:'20px',minHeight:'2rem'}}>{selected.flower}</Row>
+              </Col>
+              <Col xs={2} style={this.center}>
+                <Button>Edit Flower</Button>
+              </Col>
+              <Col xs={2} style={this.center}>
+                <Modalin/>
+              </Col>
             </Row>
             <Row>
               <Col xs={4}>
@@ -98,7 +116,7 @@ class App extends React.Component {
                 </Row>
               </Col>
               <Col xs={4}>
-                <Row style={{fontWeight:'bold', textAlign:'center'}}>
+                <Row style={this.boldCenter}>
                   <Col xs={3}>Person</Col>
                   <Col xs={5}>Location</Col>
                   <Col xs={4}>Date Sighted</Col>
@@ -123,12 +141,4 @@ class App extends React.Component {
     
   }
 }
-{/* <Row>
-          <Col>
-            <input style={{borderWidth:"2px", borderColor:"#000000", color:"Blue" }}
-            value = {flowers.NAME}
-            onChange = {e => this.setState({flowers: {...flowers, NAME: e.target.value }})}
-            />
-          </Col>
-        </Row> */}
 export default App;
