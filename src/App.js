@@ -25,8 +25,8 @@ class App extends React.Component {
       .catch(err => console.error(err))
   }
 
-  searchFlower = _ =>{
-    fetch('http://localhost:4000/findFlower?flower=' + encodeURIComponent(this.selected.flower))
+  searchFlower = (comname) =>{
+    fetch('http://localhost:4000/findFlower?flower=' + encodeURIComponent(comname))
       .then(response => response.json())
       .then(response => (this.setState({tenRecent: response.data}),
         console.log(response.data)))
@@ -34,7 +34,7 @@ class App extends React.Component {
     //correctly sets tenRecent
   }
 
-
+  boldCenter = {textAlign:'center', fontWeight:'bold'}
   rowBorder = {
     border:'1px solid #000000',
     color:"Blue",
@@ -44,9 +44,9 @@ class App extends React.Component {
   <Button key={COMNAME} style={this.rowBorder} block
     onClick={e => (
       console.log('COMNAME Selected: ' + COMNAME),
-      this.setState(this.selected = {'flower':COMNAME,'name':''}),
+      this.setState({selected: {'flower':COMNAME,'name':''}}),
       console.log(this.selected),
-      this.searchFlower()
+      this.searchFlower(COMNAME)
   )}> 
     <Row>
         <Col xs={6} >{GENUS + " " + SPECIES}</Col>
@@ -55,7 +55,28 @@ class App extends React.Component {
   </Button>
   
   )
-  
+
+  separate = {padding:'5px',
+  borderBottom:'1px solid black'}
+
+  render10Recent= ({NAME, PERSON, LOCATION, SIGHTED}) => (
+      <Row>
+          <Col xs={3} style={this.separate}>{PERSON}</Col>
+          <Col xs={5} style={this.separate}>{LOCATION}</Col>
+          <Col xs={4} style={{padding:'5px', borderBottom:'1px solid black'}}>{SIGHTED}</Col>
+      </Row>
+    
+    )
+  scrollAble = {height:(2*window.innerHeight/3 - 20),
+  overflow:'hidden',overflowY:'scroll',
+  borderTop:'1px solid black',
+  borderBottom:'1px solid black',
+  borderRight:'1px solid black'}
+
+  lists10 = {height:(2*window.innerHeight/3 - 20),
+    borderTop:'1px solid black',
+    borderBottom:'1px solid black',
+    borderRight:'1px solid black',}
  
   render(){
     
@@ -65,17 +86,32 @@ class App extends React.Component {
         <Row>
           <Col xs={12}>
             <Row>
-              <Col xs={4} style={{textAlign:'center', fontWeight:'bold'}}>Latin name</Col>
-              <Col xs={4} style={{textAlign:'center', fontWeight:'bold'}}>Comname</Col>
-              <Col xs={4} style={{textAlign:'center', fontWeight:'bold'}}>Flower Selected</Col>
+              <div style={{fontWeight:'bold', padding:'1rem'}}>
+                Currently Selected Flower: {selected.flower /* Does not update*/}
+              </div>
             </Row>
             <Row>
-              <Col xs={8}>
-                {flowers.map(this.renderFlower)}
+              <Col xs={4}>
+                <Row>
+                  <Col xs={6} style={this.boldCenter}>Latin name</Col>
+                  <Col xs={6} style={this.boldCenter}>Comname</Col>
+                </Row>
               </Col>
               <Col xs={4}>
-                Common Name: {selected.flower /* Does not update*/} 
-                {/*tenRecent.map(this.render10Recent)*/}
+                <Row style={{fontWeight:'bold', textAlign:'center'}}>
+                  <Col xs={3}>Person</Col>
+                  <Col xs={5}>Location</Col>
+                  <Col xs={4}>Date Sighted</Col>
+                </Row>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col xs={4} style={this.scrollAble}>
+                {flowers.map(this.renderFlower)}
+              </Col>
+              <Col xs={4} style={this.lists10}>
+                {tenRecent.map(this.render10Recent)}
               </Col>
             </Row>
           </Col>
