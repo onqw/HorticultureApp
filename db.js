@@ -1,11 +1,12 @@
-const express = require('express');
-const cors = require('cors');
-const sqlite3 = require('sqlite3').verbose();
+const express = require('express'),
+    cors = require('cors'),
+    sqlite3 = require('sqlite3').verbose(),
+    bodyParser = require('body-parser'),
+    path = require('path')
 
 
 const app = express();
-
-
+app.use(bodyParser.json());
 
 app.use(cors());
 
@@ -65,7 +66,30 @@ app.get('/showAllFlowers',(req,res) =>{
 	});
 });
 
-
+app.post('/insertSighting',(req,res) =>{
+  console.log(req.body)
+  let flower = req.body.flower
+  let person = req.body.person
+  let location = req.body.location
+  let sighted = req.body.date
+  //sighted = sightedPre.replace(' ','-')
+  console.log('Inserting: '+flower+person+location+sighted)
+  let insertNewRow = 'INSERT INTO ' +
+  'SIGHTINGS (NAME,PERSON,LOCATION,SIGHTED) '+ 
+  "VALUES('"+flower+"','"+person+"','"+location+"','"+sighted+"')";
+  //console.log(req.body)
+	db.run(insertNewRow, [], (err)=>{
+	  if (err) {
+      console.log('There was an error: ' + insertNewRow)
+	    return res.send(err);
+    }
+    else{
+      console.log(`Row inserted ${this.changes}`);
+      return res.send('Success')
+    }
+  });
+  
+});
 
 
 
@@ -98,16 +122,17 @@ let conname = "Ithuriels spear";
 });
 */
 
-//let insertNewRow = 'INSERT INTO SIGHTINGS(NAME,PERSON,LOCATION,SIGHTED) VALUES("FLowerA","Gus","Place", DATE('now'))';
+/* let insertNewRow = 'INSERT INTO SIGHTINGS(NAME,PERSON,LOCATION,SIGHTED)'+ 
+'VALUES("FLowerA","Gus","Place", DATE('now'))';
 
+ */
 
-
-/*db.run(insertNewRow, (err) =>{
+/* db.run(insertNewRow, (err) =>{
 		if(err) {
 		return console.log(err); 
 	}
 	 console.log(`Rows inserted ${this.changes}`);
-	}); */
+	}); */ 
 
 
 

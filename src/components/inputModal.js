@@ -1,11 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import 'jquery';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-modal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import DatePicker from 'react-date-picker';
+import Select from "react-dropdown-select";
+import axios from 'axios';
+import moment from 'moment';
+
 
 const customStyles = {
     content: {
@@ -15,28 +19,32 @@ const customStyles = {
       bottom:'auto',
       marginRight:'-50%',
       transform:'translate(-50%, -50%)',
-      minHeight:'33%',
+      minHeight:'40%',
       minWidth:'50%',
-      maxWidth:'75%'
+      maxWidth:'400px'
     }
   };
-
 
 Modal.setAppElement('div')
 
 class inputModal extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     
   this.state = {
-      modalIsOpen: false
+      modalIsOpen: false,
+      date: new Date(),
+      selected:[],
+      name:'',
+      location:''
   };
-  
-  this.openModal = this.openModal.bind(this);
-  this.afterOpenModal = this.afterOpenModal.bind(this);
-  this.closeModal = this.closeModal.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.afterOpenModal = this.afterOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
-  pad={padding:'10px'}
+
+
+  pad={paddingTop:'5px',paddingBottom:'5px'}
   openModal() {
   this.setState({modalIsOpen: true});
   }
@@ -49,7 +57,45 @@ class inputModal extends React.Component {
   closeModal() {
   this.setState({modalIsOpen: false});
   }
+
+  onDateChange = date => {this.setState({ date })}
+  onChangeHandle = ({target}) => {this.setState({[target.name]:target.value})}
   
+  setSelected = (select) => {
+    this.setState({'selected':select})
+  }
+
+  itemRenderer = ({ item, itemIndex, props, state, methods }) => (
+    <div key={item[props.valueField]} onClick={() => methods.addItem(item)}>
+      <div style={{ margin: "10px" }}>
+        <input type="checkbox" checked={methods.isSelected(item)} />
+        &nbsp;&nbsp;&nbsp;{item[props.labelField]}
+      </div>
+    </div>
+  );
+
+  insertTuple = () => {
+    if (this.selected === []){
+      return
+    }
+    else{
+      let flower = this.state.selected[0].comname
+      let person = this.state.name
+      let location = this.state.location
+      let date = moment(this.state.date)
+        .format('YYYY-MM-DD')
+      axios({
+        method:'post',
+        url:'http://localhost:4000/insertSighting',
+        data:{
+          "flower":flower,
+          "person":person,
+          "location":location,
+          "date":date
+        }}).then(res=>{console.log(res.status)})
+        .catch(err => console.error(err))
+    }
+  }
   render() {
   return (
     <div>
@@ -65,33 +111,60 @@ class inputModal extends React.Component {
         <Col xs={1}/>
         <Col xs={10}>
           <Row ref={subtitle => this.subtitle = subtitle}>
-            <Col xs={10} style={{textAlign:'center'}}>Input answers below</Col>
-            <Col xs={2}>
+            <Col md={10} style={{fontWeight:'bold', fontSize:'1.5rem'}}>Input answers below</Col>
+            <Col md={2}>
               <Button variant='danger' onClick={this.closeModal}>
                 close
               </Button>
             </Col>
           </Row>
           <Row id='Modal-body'>
-            <form>
-              <Row style={this.pad}>
-                <Col xs={5}>Select Flower:</Col> 
-                <Col xs={7}><input /></Col>
-              </Row>
-              <Row style={this.pad}>
-                <Col xs={5}>First name:</Col> 
-                <Col xs={7}><input /></Col>
-              </Row>
-              <Row style={this.pad}>
-                <Col xs={5}>Location:</Col> 
-                <Col xs={7}><input /></Col>
-              </Row>
-              <Row style={this.pad}>
-                <Col xs={5}>Date Sighted:</Col> 
-                <Col xs={7}><input /></Col>
-              </Row>
-
-            </form>
+            <Col md={12}>
+              <form>
+                <Row style={this.pad}>
+                  <Col xs={4}>Flower:</Col> 
+                  <Col lg={8}>
+                  <Select 
+                  labelField='comname'
+                  valueField='comname'
+                  sortBy='comname'
+                  searchBy='comname'
+                  multi={false}
+                  dropdownHeight='200px'
+                  dropdownGap={5}
+                  disabled={false}
+                  name='selected'
+                  options={this.props.flowerNames} 
+                  value={this.state.selected}
+                  onChange={(selected) => {this.setSelected(selected)
+                    console.log(selected)}}
+                    
+                  />
+                    
+                  </Col>
+                </Row>
+                <Row style={this.pad}>
+                  <Col xs={4}>First name:</Col> 
+                  <Col xs={8}><input type='text' name='name' value={this.state.name} onChange={this.onChangeHandle}/></Col>
+                </Row>
+                <Row style={this.pad}>
+                  <Col xs={4}>Location:</Col> 
+                  <Col xs={8}><input type='text' name='location' value={this.state.location} onChange={this.onChangeHandle}/></Col>
+                </Row>
+                <Row style={this.pad}>
+                  <Col xs={4}>Date Sighted:</Col> 
+                  <Col xs={8}>
+                    <DatePicker
+                      style={{width:'100%'}}
+                      onChange={this.onDateChange}
+                      value={this.state.date}
+                      format='y-MM-dd'
+                    />
+                  </Col>
+                </Row>
+                <Button onClick={this.insertTuple}>Submit</Button>
+              </form>
+            </Col>
           </Row> 
         </Col>
         <Col xs={1}/>

@@ -52,8 +52,8 @@ class App extends React.Component {
   searchFlower = (comname) =>{
     fetch('http://localhost:4000/findFlower?flower=' + encodeURIComponent(comname))
       .then(response => response.json())
-      .then(response => (this.setState({tenRecent: response.data}),
-        console.log(response.data)))
+      .then(response => (this.setState({tenRecent: response.data})))
+        //console.log(response.data)))
       .catch(err => console.error(err))
     //correctly sets tenRecent
   }
@@ -61,12 +61,12 @@ class App extends React.Component {
   
   renderFlower= ({GENUS, SPECIES, COMNAME}) => (
   <Button key={COMNAME} style={this.rowBorder} block
-    onClick={e => (
-      console.log('COMNAME Selected: ' + COMNAME),
-      this.setState({selected: {'flower':COMNAME,'name':''}}),
-      console.log(this.selected),
+    onClick={e => {
+      console.log('COMNAME Selected: ' + COMNAME)
+      this.setState({selected: {'flower':COMNAME,'name':''}})
+      console.log(this.selected)
       this.searchFlower(COMNAME)
-  )}> 
+    }}> 
     <Row>
         <Col xs={6} >{GENUS + " " + SPECIES}</Col>
         <Col xs={6}>{COMNAME}</Col>
@@ -74,8 +74,6 @@ class App extends React.Component {
   </Button>
   
   )
-
-  
 
   render10Recent= ({NAME, PERSON, LOCATION, SIGHTED}) => (
       <Row>
@@ -86,7 +84,8 @@ class App extends React.Component {
     
     )
 
-  
+  renderFlowerNames = ({GENUS, SPECIES, COMNAME}) => {
+      return {'latin':GENUS + ' ' + SPECIES,'comname':COMNAME}}  
  
 
   render(){
@@ -105,7 +104,9 @@ class App extends React.Component {
                 <Button>Edit Flower</Button>
               </Col>
               <Col xs={2} style={this.center}>
-                <Modalin/>
+                <Modalin
+                  flowerNames={flowers.map(this.renderFlowerNames)}
+                />
               </Col>
             </Row>
             <Row>
