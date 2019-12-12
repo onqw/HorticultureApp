@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Modalin from './components/inputModal.js';
 import Header from './Header';
 import Scrollbars from 'react-custom-scrollbars';
+import Modalin2 from './components/inputModal2.js';
 var path = require('path'), fs=require('fs');
 var bg=require('./flower.jpg');
 var blend=require('./images/blend.jpg');
@@ -184,10 +185,11 @@ class App extends React.Component {
                 <Col xs={3} style={{textAlign:'center',
                   margin:'auto',
                   width:'100%', height:'100%'}}>
-                  <Button style={{color: 'black', 
-                    backgroundColor: '#FAC363', 
-                    fontWeight: 'bold', 
-                    borderColor:'#DF9107'}}>Edit Flower</Button>
+                 <Modalin2
+                    passName={this.state.name}
+                    passSelected={this.state.selected.flower}
+                    flowerNames={flowers.map(this.renderFlowerNames)}
+                  />
                 </Col>
                 <Col xs={3} style={{textAlign:'center',
                      margin:'auto',

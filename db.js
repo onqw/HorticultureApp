@@ -119,6 +119,32 @@ app.post('/insertSighting',(req,res) =>{
   
 });
 
+app.post('/updateFlower',(req,res) =>{
+  console.log(req.body)
+  let genus = req.body.genus
+  let species = req.body.species
+  let comname = req.body.comname
+  let oldcomname = req.body.old
+  //sighted = sightedPre.replace(' ','-')
+  console.log('Updating: '+genus+species+comname)
+  let updateRow = "UPDATE FLOWERS"+" "+"SET genus='"+
+  genus+"', species='"+species+"', comname= '" + 
+  comname + "' WHERE comname = '"+ oldcomname + "';"
+  //console.log(req.body)s
+  db.run(updateRow, [], (err)=>{
+    if (err) {
+      console.log('There was an error: ' + updateRow)
+      return res.send(err);
+    }
+    else{
+      console.log(`Row updated ${this.changes}`);
+      return res.send('Success')
+    }
+  });
+  
+});
+
+
 
 
 /*db.all(showAllSightingsQuery, [], (err,rows)=>{
@@ -139,7 +165,6 @@ app.post('/insertSighting',(req,res) =>{
   });
 });*/
 
-let conname = "Ithuriels spear";
 
 /*db.each(searchFor10ByName, [conname], (err,row)=>{
 
