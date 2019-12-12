@@ -74,9 +74,9 @@ app.post('/insertSighting',(req,res) =>{
   let sighted = req.body.date
   //sighted = sightedPre.replace(' ','-')
   console.log('Inserting: '+flower+person+location+sighted)
-  let insertNewRow = 'INSERT INTO ' +
-  'SIGHTINGS (NAME,PERSON,LOCATION,SIGHTED) '+ 
-  "VALUES('"+flower+"','"+person+"','"+location+"','"+sighted+"')";
+  let insertNewRow = 'BEGIN TRANSACTION; INSERT INTO ' +
+  'SIGHTINGS (NAME,PERSON,LOCATION,SIGHTED) '+  
+  "VALUES('"+flower+"','"+person+"','"+location+"','"+sighted+"') ";
   //console.log(req.body)
 	db.run(insertNewRow, [], (err)=>{
 	  if (err) {

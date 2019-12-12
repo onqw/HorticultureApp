@@ -51,7 +51,7 @@ class inputModal extends React.Component {
   
   afterOpenModal() {
   // references are now sync'd and can be accessed.
-  this.subtitle.style.color = 'Green';
+  this.subtitle.style.color = 'white';
   }
   
   closeModal() {
@@ -99,7 +99,7 @@ class inputModal extends React.Component {
   render() {
   return (
     <div>
-      <Button onClick={this.openModal}>New Sighting</Button>
+      <Button onClick={this.openModal} style={{color: 'black', backgroundColor: '#FAC363', fontWeight: 'bold', borderColor: '#DF9107'}}>New Sighting</Button>
       <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
@@ -109,7 +109,7 @@ class inputModal extends React.Component {
       >
       <Row>
         <Col xs={1}/>
-        <Col xs={10}>
+        <Col style={{backgroundColor: 'black', height: '100%'}}>
           <Row ref={subtitle => this.subtitle = subtitle}>
             <Col md={10} style={{fontWeight:'bold', fontSize:'1.5rem'}}>Input answers below</Col>
             <Col md={2}>
@@ -120,7 +120,7 @@ class inputModal extends React.Component {
           </Row>
           <Row id='Modal-body'>
             <Col md={12}>
-              <form>
+              <form >
                 <Row style={this.pad}>
                   <Col xs={4}>Flower:</Col> 
                   <Col lg={8}>

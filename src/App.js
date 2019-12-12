@@ -4,8 +4,10 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Modalin from './components/inputModal.js';
-
+import Header from './Header';
+var bg=require('./flower.jpg');
 class App extends React.Component {
+  
   constructor(props){
     super(props);
     this.state = {
@@ -23,20 +25,21 @@ class App extends React.Component {
   center = {textAlign:'center'}
 
   rowBorder = {
-    border:'1px solid #000000',
-    color:"Blue",
-    backgroundColor:"white"}
+    border:'8px solid #000000',
+    color: "white",
+    backgroundColor:"black"}
 
-  scrollAble = {height:(1.5*window.innerHeight/3),
+  scrollAble = {height:(2.5*window.innerHeight/4),
     overflow:'hidden',overflowY:'scroll',
-    borderTop:'1px solid black',
-    borderBottom:'1px solid black',
-    borderRight:'1px solid black'}
+    backgroundColor:'black',
+    scrollbarWidth: 'thin',
+    direction: 'rtl',
+    opacity:'0.5',
+    }
 
   lists10 = {minHeight:(1.5*window.innerHeight/3),
-    borderTop:'1px solid black',
-    borderBottom:'1px solid black',
-    borderRight:'1px solid black'}
+    backgroundColor:'black',
+    opacity:'0.3',}
 
   componentDidMount(){
     this.getFlower();
@@ -58,7 +61,7 @@ class App extends React.Component {
     //correctly sets tenRecent
   }
 
-  
+
   renderFlower= ({GENUS, SPECIES, COMNAME}) => (
   <Button key={COMNAME} style={this.rowBorder} block
     onClick={e => {
@@ -77,9 +80,9 @@ class App extends React.Component {
 
   render10Recent= ({NAME, PERSON, LOCATION, SIGHTED}) => (
       <Row>
-          <Col xs={3} style={this.separate}>{PERSON}</Col>
-          <Col xs={5} style={this.separate}>{LOCATION}</Col>
-          <Col xs={4} style={{padding:'5px', borderBottom:'1px solid black'}}>{SIGHTED}</Col>
+          <Col xs={3} style={{padding:'5px', borderBottom:'5px solid white', color: 'white'}}>{PERSON}</Col>
+          <Col xs={5} style={{padding:'5px', borderBottom:'5px solid white', color: 'white'}}>{LOCATION}</Col>
+          <Col xs={4} style={{padding:'5px', borderBottom:'5px solid white', color: 'white'}}>{SIGHTED}</Col>
       </Row>
     
     )
@@ -92,52 +95,56 @@ class App extends React.Component {
     
     const { flowers, selected, tenRecent } =this.state;
     return (
-      <div className = "App" style={{padding:'10px',fontSize:'1rem'}}>
+
+      <div className = "App" style={{padding:'1px',backgroundColor: '#31302F', height: '100vh', backgroundImage: "url("+bg+")" }}>
+        <Header />
+        {/* <img src= "/flower.jpg" /> */}
         <Row>
-          <Col xs={12}>
+          <Col xs={1}/>
+          <Col xs={10}>
             <Row>
-              <Col xs={4} >
-                <Row style={{fontWeight:'bold', paddingLeft:'20px'}}>Currently Selected Flower:</Row>
-                 <Row style={{paddingLeft:'20px',minHeight:'2rem'}}>{selected.flower}</Row>
+              <Col xs={6} >
+                <Row style={{fontWeight:'bold', paddingLeft:'20px', fontSize:'25px', color: 'grey', paddingBottom:'10px'}}>Currently Selected Flower:</Row>
+                 <Row style={{paddingLeft:'20px', color: 'white', fontSize:'23px'}}>{selected.flower}</Row>
               </Col>
-              <Col xs={2} style={this.center}>
-                <Button>Edit Flower</Button>
+              <Col xs={3} style={this.center}>
+                <Button style={{color: 'black', backgroundColor: '#FAC363', fontWeight: 'bold', borderColor: '#DF9107'}}>Edit Flower</Button>
               </Col>
-              <Col xs={2} style={this.center}>
+              <Col xs={3} style={this.center}>
                 <Modalin
                   flowerNames={flowers.map(this.renderFlowerNames)}
                 />
               </Col>
             </Row>
             <Row>
-              <Col xs={4}>
-                <Row>
-                  <Col xs={6} style={this.boldCenter}>Latin name</Col>
-                  <Col xs={6} style={this.boldCenter}>Comname</Col>
+              <Col xs={6}>
+                <Row style = {this.boldCenter}>
+                  <Col xs={6} style={{color: 'white', fontSize: '20px', opacity: '0.6'}}>Latin name</Col>
+                  <Col xs={6} style={{color: 'white', fontSize: '20px', opacity: '0.6'}}>Comname</Col>
                 </Row>
               </Col>
-              <Col xs={4}>
+              <Col xs={6}>
                 <Row style={this.boldCenter}>
-                  <Col xs={3}>Person</Col>
-                  <Col xs={5}>Location</Col>
-                  <Col xs={4}>Date Sighted</Col>
+                  <Col style={{color: 'white', fontSize: '20px', opacity: '0.6'}} xs={3}>Person</Col>
+                  <Col style={{color: 'white', fontSize: '20px', opacity: '0.6'}} xs={5}>Location</Col>
+                  <Col style={{color: 'white', fontSize: '20px', opacity: '0.6'}} xs={4}>Date Sighted</Col>
                 </Row>
               </Col>
             </Row>
 
             <Row>
-              <Col xs={4} style={this.scrollAble}>
+              <Col xs={6} style={this.scrollAble}>
                 {flowers.map(this.renderFlower)}
               </Col>
-              <Col xs={4} style={this.lists10}>
+              <Col xs={6} style={this.lists10}>
                 {tenRecent.map(this.render10Recent)}
               </Col>
             </Row>
           </Col>
-         
+          <Col xs={1}/>
         </Row>
-        
       </div>
+     
     );
     
   }
