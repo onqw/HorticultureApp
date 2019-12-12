@@ -66,6 +66,33 @@ app.get('/showAllFlowers',(req,res) =>{
 	});
 });
 
+app.get('/showAllLatin',(req,res) =>{
+
+	let showAllSightingsQuery = 'SELECT DISTINCT GENUS||" "||SPECIES AS Latin'
+	+ ' FROM FLOWERS ORDER BY GENUS ASC';
+	db.all(showAllSightingsQuery, (err,row)=>{
+	  if (err) {
+	    return res.send(err);
+	  }
+    console.log(row.length);
+    var list = [] 
+    for(i=0; i < row.length;i++){list.push(row[i].Latin)}
+    return res.send(list);
+	});
+});
+
+app.get('/getUsers',(req,res) =>{
+	let printALL = 'SELECT NAME FROM MEMBERS';
+	db.all(printALL, (err,row)=>{
+	if (err) {
+    return res.send(err);
+  }
+  else{
+    return res.json({data: row})
+  }
+	});
+});
+
 app.post('/insertSighting',(req,res) =>{
   console.log(req.body)
   let flower = req.body.flower
@@ -74,9 +101,10 @@ app.post('/insertSighting',(req,res) =>{
   let sighted = req.body.date
   //sighted = sightedPre.replace(' ','-')
   console.log('Inserting: '+flower+person+location+sighted)
+  //BEGIN TRANSACTION;
   let insertNewRow = 'INSERT INTO ' +
-  'SIGHTINGS (NAME,PERSON,LOCATION,SIGHTED) '+ 
-  "VALUES('"+flower+"','"+person+"','"+location+"','"+sighted+"')";
+  'SIGHTINGS (NAME,PERSON,LOCATION,SIGHTED) '+  
+  "VALUES('"+flower+"','"+person+"','"+location+"','"+sighted+"') ";
   //console.log(req.body)
 	db.run(insertNewRow, [], (err)=>{
 	  if (err) {
@@ -84,8 +112,8 @@ app.post('/insertSighting',(req,res) =>{
 	    return res.send(err);
     }
     else{
-      console.log(`Row inserted ${this.changes}`);
-      return res.send('Success')
+      //console.log(`Row inserted ${this.changes}`);
+      return res.send('Success').status(200)
     }
   });
   

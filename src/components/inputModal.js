@@ -21,9 +21,14 @@ const customStyles = {
       transform:'translate(-50%, -50%)',
       minHeight:'40%',
       minWidth:'50%',
-      maxWidth:'400px'
+      maxWidth:'400px',
+      backgroundColor:'rgb(249,224,229,1)',
+      borderRadius:'2rem',
+      color:'black',
+      fontWeight:'bold'
     }
   };
+const lightGrey = {color:'black',backgroundColor:'white'}
 
 Modal.setAppElement('div')
 
@@ -36,7 +41,8 @@ class inputModal extends React.Component {
       date: new Date(),
       selected:[],
       name:'',
-      location:''
+      location:'',
+      insertStatus:''
   };
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -47,11 +53,14 @@ class inputModal extends React.Component {
   pad={paddingTop:'5px',paddingBottom:'5px'}
   openModal() {
   this.setState({modalIsOpen: true});
+  if (this.props.passName !== ''){
+    this.setState({name:this.props.passName})
+  }
   }
   
   afterOpenModal() {
   // references are now sync'd and can be accessed.
-  this.subtitle.style.color = 'Green';
+  this.subtitle.style.color = 'white';
   }
   
   closeModal() {
@@ -75,31 +84,60 @@ class inputModal extends React.Component {
   );
 
   insertTuple = () => {
-    if (this.selected === []){
+    if (this.state.selected === []){
+      this.setState({insertStatus:'Please enter a flower'})
       return
     }
     else{
-      let flower = this.state.selected[0].comname
-      let person = this.state.name
-      let location = this.state.location
-      let date = moment(this.state.date)
-        .format('YYYY-MM-DD')
-      axios({
-        method:'post',
-        url:'http://localhost:4000/insertSighting',
-        data:{
-          "flower":flower,
-          "person":person,
-          "location":location,
-          "date":date
-        }}).then(res=>{console.log(res.status)})
-        .catch(err => console.error(err))
+      var resStatus;
+      if (this.state.selected[0] !== undefined) {
+        let flower = this.state.selected[0].comname
+        let person = this.state.name
+        let location = this.state.location
+        let date = moment(this.state.date)
+          .format('YYYY-MM-DD')
+        axios({
+          method:'post',
+          url:'http://localhost:4000/insertSighting',
+          data:{
+            "flower":flower,
+            "person":person,
+            "location":location,
+            "date":date
+          }}).then(res=>{
+            if (res.status===200){
+              this.setState({insertStatus:'Success'})
+              setTimeout(()=>{this.closeModal()},2000)
+            }
+            else {
+              this.setState({insertStatus:'Failed to insert'})
+            }
+          })
+          .catch(err => console.error(err))
+      }
+      else {
+        this.setState({insertStatus:'Please enter a flower'})
+      }
+      
     }
   }
   render() {
+    const depends = () => {
+      if (this.state.insertStatus !== 'Success'){
+        return 'red'
+      }
+      else {
+        return 'lightgreen'
+      }
+    }
   return (
+    
     <div>
-      <Button onClick={this.openModal}>New Sighting</Button>
+      <Button onClick={this.openModal}
+        style={{color: 'black', 
+        backgroundColor: '#FAC363', 
+        fontWeight: 'bold', 
+        borderColor: '#DF9107'}}>New Sighting</Button>
       <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
@@ -109,22 +147,29 @@ class inputModal extends React.Component {
       >
       <Row>
         <Col xs={1}/>
-        <Col xs={10}>
+        <Col style={{height: '100%'}}>
           <Row ref={subtitle => this.subtitle = subtitle}>
-            <Col md={10} style={{fontWeight:'bold', fontSize:'1.5rem'}}>Input answers below</Col>
-            <Col md={2}>
-              <Button variant='danger' onClick={this.closeModal}>
-                close
+            <Col md={10} style={{color:'black',
+            fontWeight:'bold', fontSize:'1.5rem'}}>Input answers below</Col>
+            <Col md={2} style={{textAlign:'right'}}>
+              <Button variant='danger' 
+              style={{paddingTop:'0rem', 
+              paddingBottom:'0rem',
+              paddingLeft:'0.5rem',
+              paddingRight:'0.5rem',
+              margin:'auto',
+              fontWeight:'bold'}} onClick={this.closeModal}>
+                x
               </Button>
             </Col>
           </Row>
           <Row id='Modal-body'>
             <Col md={12}>
-              <form>
+              <form >
                 <Row style={this.pad}>
                   <Col xs={4}>Flower:</Col> 
                   <Col lg={8}>
-                  <Select 
+                  <Select style={lightGrey} 
                   labelField='comname'
                   valueField='comname'
                   sortBy='comname'
@@ -143,26 +188,54 @@ class inputModal extends React.Component {
                     
                   </Col>
                 </Row>
+                <Row style={{minHeight:'1rem'}}/>
                 <Row style={this.pad}>
                   <Col xs={4}>First name:</Col> 
-                  <Col xs={8}><input type='text' name='name' value={this.state.name} onChange={this.onChangeHandle}/></Col>
+                  <Col xs={1}></Col>
+                  <Col xs={7}>
+                    <input style={lightGrey,
+                      {minWidth:'100%'}}
+                      type='text' name='name'
+                      value={this.state.name}
+                      onChange={this.onChangeHandle}/>
+                    </Col>
                 </Row>
+                <Row style={{minHeight:'1rem'}}/>
                 <Row style={this.pad}>
                   <Col xs={4}>Location:</Col> 
-                  <Col xs={8}><input type='text' name='location' value={this.state.location} onChange={this.onChangeHandle}/></Col>
+                  <Col xs={1}></Col>
+                  <Col xs={7}>
+                    <input style={lightGrey,
+                    {minWidth:'100%'}} type='text' 
+                    name='location' 
+                    value={this.state.location} 
+                    onChange={this.onChangeHandle}/>
+                  </Col>
                 </Row>
                 <Row style={this.pad}>
-                  <Col xs={4}>Date Sighted:</Col> 
-                  <Col xs={8}>
+                  <Col xs={5}>Date Sighted:</Col> 
+                  <Col xs={7}>
+                    <div style={lightGrey,
+                      {minWidth:'100%'}}>
                     <DatePicker
-                      style={{width:'100%'}}
+                      
                       onChange={this.onDateChange}
                       value={this.state.date}
                       format='y-MM-dd'
                     />
+                    </div>
                   </Col>
                 </Row>
-                <Button onClick={this.insertTuple}>Submit</Button>
+                <div style={{color:depends(), fontWeight:'bold',
+                    backgroundColor:'rgb(0,0,0,0.2)',
+                    width:'auto'}}>
+                  {this.state.insertStatus}
+                </div>
+                <Button onClick={this.insertTuple}
+                style={{color:'black',fontWeight:'bold',
+                backgroundColor:'rgba(255, 50, 100, 0.65)',
+                outlineActive:'solid 1px rgba(255, 50, 100, 0.4)'}}
+                variant='danger'>Submit</Button>
               </form>
             </Col>
           </Row> 
