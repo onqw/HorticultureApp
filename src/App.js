@@ -7,9 +7,7 @@ import Modalin from './components/inputModal.js';
 import Header from './Header';
 import Scrollbars from 'react-custom-scrollbars';
 import Modalin2 from './components/inputModal2.js';
-var path = require('path'), fs=require('fs');
 var bg=require('./flower.jpg');
-var blend=require('./images/blend.jpg');
 var loginBG=require('./loginBG.jpg');
 var flowerPic;
 class App extends React.Component {
@@ -227,7 +225,7 @@ class App extends React.Component {
                 </Col>
                 <Col xs={6} style={this.lists10}>
                   <div style={{width:'100%',height:'100%',
-                  background: "linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .8))",
+                  background: "linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5))",
                   backgroundImage:"url("+flowerPic+")",
                   backgroundSize:'cover'}}>
                     {tenRecent.map(this.render10Recent)}

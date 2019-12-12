@@ -89,7 +89,6 @@ class inputModal extends React.Component {
       return
     }
     else{
-      var resStatus;
       if (this.state.selected[0] !== undefined) {
         let flower = this.state.selected[0].comname
         let person = this.state.name
@@ -150,7 +149,8 @@ class inputModal extends React.Component {
         <Col style={{height: '100%'}}>
           <Row ref={subtitle => this.subtitle = subtitle}>
             <Col md={10} style={{color:'black',
-            fontWeight:'bold', fontSize:'1.5rem'}}>Input answers below</Col>
+            fontWeight:'bold', fontSize:'1.5rem'}}>
+              Input answers below</Col>
             <Col md={2} style={{textAlign:'right'}}>
               <Button variant='danger' 
               style={{paddingTop:'0rem', 
@@ -212,6 +212,7 @@ class inputModal extends React.Component {
                     onChange={this.onChangeHandle}/>
                   </Col>
                 </Row>
+                <Row style={{minHeight:'1rem'}}/>
                 <Row style={this.pad}>
                   <Col xs={5}>Date Sighted:</Col> 
                   <Col xs={7}>

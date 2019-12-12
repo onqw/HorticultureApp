@@ -5,10 +5,8 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-modal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import DatePicker from 'react-date-picker';
 import Select from "react-dropdown-select";
 import axios from 'axios';
-import moment from 'moment';
 
 
 const customStyles = {
@@ -21,9 +19,15 @@ const customStyles = {
       transform:'translate(-50%, -50%)',
       minHeight:'40%',
       minWidth:'50%',
-      maxWidth:'400px'
+      maxWidth:'400px',
+      backgroundColor:'rgb(249,224,229,1)',
+      borderRadius:'2rem',
+      color:'black',
+      fontWeight:'bold'
     }
   };
+
+  const lightGrey = {color:'black',backgroundColor:'white'}
 
 Modal.setAppElement('div')
 
@@ -58,7 +62,6 @@ class inputModal extends React.Component {
   this.setState({modalIsOpen: false});
   }
 
-  onDateChange = date => {this.setState({ date })}
   onChangeHandle = ({target}) => {this.setState({[target.name]:target.value})}
   
   setSelected = (select) => {
@@ -100,7 +103,12 @@ class inputModal extends React.Component {
   render() {
   return (
     <div>
-      <Button onClick={this.openModal}>Edit Flower</Button>
+      <Button onClick={this.openModal}
+      style={{color: 'black', 
+      backgroundColor: '#FAC363', 
+      fontWeight: 'bold', 
+      borderColor: '#DF9107'}}>
+        Edit Flower</Button>
       <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
@@ -112,10 +120,17 @@ class inputModal extends React.Component {
         <Col xs={1}/>
         <Col xs={10}>
           <Row ref={subtitle => this.subtitle = subtitle}>
-            <Col md={10} style={{fontWeight:'bold', fontSize:'1.5rem'}}>Input answers below</Col>
+            <Col md={10} style={{color:'black',fontWeight:'bold', fontSize:'1.5rem'}}>
+              Input answers below</Col>
             <Col md={2}>
-              <Button variant='danger' onClick={this.closeModal}>
-                close
+              <Button style={{paddingTop:'0rem', 
+              paddingBottom:'0rem',
+              paddingLeft:'0.5rem',
+              paddingRight:'0.5rem',
+              margin:'auto',
+              fontWeight:'bold'}}
+              variant='danger' onClick={this.closeModal}>
+                x
               </Button>
             </Col>
           </Row>
@@ -125,7 +140,7 @@ class inputModal extends React.Component {
                 <Row style={this.pad}>
                   <Col xs={4}>Flower:</Col> 
                   <Col lg={8}>
-                  <Select 
+                  <Select style={lightGrey}
                   labelField='comname'
                   valueField='comname'
                   sortBy='comname'
@@ -144,19 +159,42 @@ class inputModal extends React.Component {
                     
                   </Col>
                 </Row>
+                <Row style={{minHeight:'1rem'}}/>
                 <Row style={this.pad}>
                   <Col xs={4}>Genus:</Col> 
-                  <Col xs={8}><input type='text' name='Genus' value={this.state.Genus} onChange={this.onChangeHandle}/></Col>
+                  <Col xs={1}></Col>
+                  <Col xs={7}><input 
+                    style={lightGrey,
+                    {minWidth:'100%'}}
+                   type='text' name='Genus'
+                   value={this.state.Genus}
+                   onChange={this.onChangeHandle}/></Col>
                 </Row>
+                <Row style={{minHeight:'1rem'}}/>
                 <Row style={this.pad}>
                   <Col xs={4}>Species:</Col> 
-                  <Col xs={8}><input type='text' name='Species' value={this.state.Species} onChange={this.onChangeHandle}/></Col>
+                  <Col xs={1}></Col>
+                  <Col xs={7}><input style={lightGrey,
+                    {minWidth:'100%'}}
+                    type='text'
+                    name='Species' 
+                    value={this.state.Species}
+                    onChange={this.onChangeHandle}/></Col>
                 </Row>
+                <Row style={{minHeight:'1rem'}}/>
                 <Row style={this.pad}>
-                  <Col xs={4}>Comname:</Col> 
-                  <Col xs={8}><input type='text' name='Comname' value={this.state.Comname} onChange={this.onChangeHandle}/></Col>
+                  <Col xs={5}>Common Name:</Col> 
+                  <Col xs={7}><input style={lightGrey,
+                    {minWidth:'100%'}}
+                    type='text' name='Comname'
+                    value={this.state.Comname}
+                    onChange={this.onChangeHandle}/></Col>
                 </Row>
-                <Button onClick={this.updateFlower}>Submit</Button>
+                <Button style={{color:'black',fontWeight:'bold',
+                backgroundColor:'rgba(255, 50, 100, 0.65)',
+                outlineActive:'solid 1px rgba(255, 50, 100, 0.4)'}}
+                onClick={this.updateFlower}
+                variant='danger'>Submit</Button>
               </form>
             </Col>
           </Row> 

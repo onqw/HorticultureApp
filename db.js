@@ -10,11 +10,24 @@ app.use(bodyParser.json());
 
 app.use(cors());
 
+const indexQuery='CREATE INDEX sightingsIndex ON SIGHTINGS(name, person, location, sighted)'
+
+
 let db = new sqlite3.Database('flowers2019.db', (err) => {
   if (err) {
     return console.error(err.message);
   }
   console.log('Connected to SQlite database.');
+});
+
+db.all(indexQuery, (err)=>{
+  //console.log(searchFor10ByName);
+  if (err) {
+    console.error(err);
+  }
+  else{
+    console.log('Created index!')
+  }
 });
 
 app.get('/',(req,res) =>{
