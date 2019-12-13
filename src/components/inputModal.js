@@ -19,13 +19,14 @@ const customStyles = {
       bottom:'auto',
       marginRight:'-50%',
       transform:'translate(-50%, -50%)',
-      minHeight:'40%',
-      minWidth:'50%',
+      minHeight:'30%',
+      minWidth:'30%',
       maxWidth:'400px',
-      backgroundColor:'rgb(249,224,229,1)',
-      borderRadius:'2rem',
+      backgroundColor: '#737277',
+      borderRadius:'1rem',
       color:'black',
       fontWeight:'bold'
+
     }
   };
 const lightGrey = {color:'black',backgroundColor:'white'}
@@ -133,10 +134,10 @@ class inputModal extends React.Component {
     
     <div>
       <Button onClick={this.openModal}
-        style={{color: 'black', 
-        backgroundColor: '#FAC363', 
+        style={{color: 'white', fontFamily: 'Times New Roman',
+        backgroundColor: '#1e1e2f', 
         fontWeight: 'bold', 
-        borderColor: '#DF9107'}}>New Sighting</Button>
+        borderColor: '#1e1e2f'}}>New Sighting</Button>
       <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
@@ -149,8 +150,8 @@ class inputModal extends React.Component {
         <Col style={{height: '100%'}}>
           <Row ref={subtitle => this.subtitle = subtitle}>
             <Col md={10} style={{color:'black',
-            fontWeight:'bold', fontSize:'1.5rem'}}>
-              Input answers below</Col>
+            fontWeight:'bold', fontSize:'1.5rem', color: 'white',fontFamily: 'Times New Roman'}}>
+              Your New Sighting</Col>
             <Col md={2} style={{textAlign:'right'}}>
               <Button variant='danger' 
               style={{paddingTop:'0rem', 
@@ -159,7 +160,7 @@ class inputModal extends React.Component {
               paddingRight:'0.5rem',
               margin:'auto',
               fontWeight:'bold'}} onClick={this.closeModal}>
-                x
+                
               </Button>
             </Col>
           </Row>
@@ -167,7 +168,7 @@ class inputModal extends React.Component {
             <Col md={12}>
               <form >
                 <Row style={this.pad}>
-                  <Col xs={4}>Flower:</Col> 
+                  <Col xs={4} style={{fontFamily: 'Times New Roman', color: 'white'}}>Flower:</Col> 
                   <Col lg={8}>
                   <Select style={lightGrey} 
                   labelField='comname'
@@ -190,7 +191,7 @@ class inputModal extends React.Component {
                 </Row>
                 <Row style={{minHeight:'1rem'}}/>
                 <Row style={this.pad}>
-                  <Col xs={4}>First name:</Col> 
+                  <Col xs={4} style={{fontFamily: 'Times New Roman', color: 'white'}}>First name:</Col> 
                   <Col xs={1}></Col>
                   <Col xs={7}>
                     <input style={lightGrey,
@@ -202,7 +203,7 @@ class inputModal extends React.Component {
                 </Row>
                 <Row style={{minHeight:'1rem'}}/>
                 <Row style={this.pad}>
-                  <Col xs={4}>Location:</Col> 
+                  <Col xs={4} style={{fontFamily: 'Times New Roman', color: 'white'}}>Location:</Col> 
                   <Col xs={1}></Col>
                   <Col xs={7}>
                     <input style={lightGrey,
@@ -214,12 +215,12 @@ class inputModal extends React.Component {
                 </Row>
                 <Row style={{minHeight:'1rem'}}/>
                 <Row style={this.pad}>
-                  <Col xs={5}>Date Sighted:</Col> 
+                  <Col xs={5} style={{fontFamily: 'Times New Roman', color: 'white'}}>Sighted on:</Col> 
                   <Col xs={7}>
                     <div style={lightGrey,
                       {minWidth:'100%'}}>
                     <DatePicker
-                      
+                      style={{color: 'white', backgroundColor: 'black'}}
                       onChange={this.onDateChange}
                       value={this.state.date}
                       format='y-MM-dd'
@@ -233,9 +234,9 @@ class inputModal extends React.Component {
                   {this.state.insertStatus}
                 </div>
                 <Button onClick={this.insertTuple}
-                style={{color:'black',fontWeight:'bold',
-                backgroundColor:'rgba(255, 50, 100, 0.65)',
-                outlineActive:'solid 1px rgba(255, 50, 100, 0.4)'}}
+                style={{color:'white',fontWeight:'bold',
+                backgroundColor:'black',
+                outlineActive:'solid 1px rgba(255, 50, 100, 0.4)', fontFamily: 'Times New Roman'}}
                 variant='danger'>Submit</Button>
               </form>
             </Col>

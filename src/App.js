@@ -39,24 +39,27 @@ class App extends React.Component {
   rowBorder = {
     border:'8px solid #000000',
     color: "white",
+    fontFamily: 'Times New Roman',
     backgroundColor:"black",
-    borderRadius:'5px'
+    borderRadius:'3px',
+    borderColor: 'grey'
   }
 
-  scrollAble = {height:(2.5*window.innerHeight/4),
-    overflow:'hidden',overflowY:'scroll',
-    scrollbarWidth: 'thin',
-    backgroundColor:'rgba(0, 0, 0, 0.8)',
-    scrollBehavior:'smooth',
+  // scrollAble = {height:(3*window.innerHeight/4),
+  //   overflow:'hidden',overflowY:'scroll',
+  //   scrollbarWidth: 'thin',
+  //   // backgroundColor:'rgba(0, 0, 0, 0.8)',
+  //   scrollBehavior:'smooth',
     
+  //   }
+
+  lists10 = {minHeight:(1.0*window.innerHeight/4)
     }
 
-  lists10 = {minHeight:(1.5*window.innerHeight/3),
-    backgroundColor:'rgba(0, 0, 0, 0.3)'}
-
   render10 = {textAlign:'center',
-   borderBottom:'3px solid lightgrey',
-    color: 'white', fontSize:'1.1rem'}
+  //  borderBottom:'3px solid lightgrey',
+   borderTop:'3px solid lightgrey',
+    color: 'white', fontSize:'1.1rem', fontFamily: 'Times New Roman'}
   componentDidMount(){
     this.getFlower();
     this.getUsers();
@@ -108,7 +111,7 @@ class App extends React.Component {
       //console.log(this.selected)
       this.searchFlower(COMNAME,GENUS+' '+SPECIES)
     }}> 
-    <Row style={{fontSize:'1.1rem'}}>
+    <Row style={{fontSize:'1.1rem', fontFamily: 'Times New Roman'}}>
         <Col xs={6} >{GENUS + " " + SPECIES}</Col>
         <Col xs={6}>{COMNAME}</Col>
     </Row>
@@ -168,16 +171,16 @@ class App extends React.Component {
             <Col xs={1}/>
             <Col xs={10}>
               <Row>
-                <Col xs={6} style={{backgroundColor:'rgba(255, 50, 100, 0.4)',
-                  borderRadius:'5px'}}>
+                <Col xs={6} style={{backgroundColor:'#1e1e2f',
+                  borderRadius:'1rem'}}>
                   <Row>
                   <Col lg={6} style={{fontWeight:'bold', 
-                  paddingLeft:'20px', fontSize:'1.4rem', 
-                  color: 'lightgrey',textDecoration:'underline'}}>
-                    Currently Selected Flower:</Col>
-                  <Col lg={6} style={{paddingLeft:'20px', 
+                  paddingLeft:'25px', fontSize:'1.4rem', 
+                  color: 'white', fontFamily: 'Times New Roman'}}>
+                    Selected Flower:</Col>
+                  <Col lg={6} style={{
                   color: 'white', fontSize:'1.40rem',
-                  minHeight:'2rem'}}>{selected.flower}</Col>
+                  minHeight:'2rem', fontFamily:'Times New Roman'}}>{selected.flower}</Col>
                   </Row>
                 </Col>
                 <Col xs={3} style={{textAlign:'center',
@@ -203,15 +206,25 @@ class App extends React.Component {
               <Row>
                 <Col xs={6}>
                   <Row style = {this.boldCenter}>
-                    <Col xs={6} style={{color: 'white', fontSize: '20px', opacity: '0.6'}}>Latin name</Col>
-                    <Col xs={6} style={{color: 'white', fontSize: '20px', opacity: '0.6'}}>Comname</Col>
+                    <Col xs={6} style={{color: 'white', fontSize: '20px', 
+                    fontFamily:'Times New Roman', fontWeight: 'bold', backgroundColor:'#1e1e2f',
+                    borderRadius:'1rem'}}>Latin Name</Col>
+                    <Col xs={6} style={{color: 'white', fontSize: '20px',
+                    fontFamily:'Times New Roman', fontWeight: 'bold', backgroundColor:'#1e1e2f',
+                    borderRadius:'1rem'}}>Common Name</Col>
                   </Row>
                 </Col>
                 <Col xs={6}>
                   <Row style={this.boldCenter}>
-                    <Col style={{color: 'white', fontSize: '20px', opacity: '0.6'}} xs={3}>Person</Col>
-                    <Col style={{color: 'white', fontSize: '20px', opacity: '0.6'}} xs={5}>Location</Col>
-                    <Col style={{color: 'white', fontSize: '20px', opacity: '0.6'}} xs={4}>Date Sighted</Col>
+                    <Col style={{color: 'white', fontSize: '20px',  
+                    fontFamily:'Times New Roman', fontWeight: 'bold', backgroundColor:'#1e1e2f',
+                    borderRadius:'1rem'}} xs={3}>Person</Col>
+                    <Col style={{color: 'white', fontSize: '20px', 
+                    fontFamily:'Times New Roman', fontWeight: 'bold', backgroundColor:'#1e1e2f',
+                    borderRadius:'1rem'}} xs={5}>Location</Col>
+                    <Col style={{color: 'white', fontSize: '20px', 
+                    fontFamily:'Times New Roman', fontWeight: 'bold', backgroundColor:'#1e1e2f',
+                    borderRadius:'1rem'}} xs={4}>Date Sighted</Col>
                   </Row>
                 </Col>
               </Row>
@@ -225,14 +238,25 @@ class App extends React.Component {
                 </Col>
                 <Col xs={6} style={this.lists10}>
                   <div style={{width:'100%',height:'100%',
-                  background: "linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5))",
-                  backgroundImage:"url("+flowerPic+")",
+                  // background: "linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5))",
+                  // backgroundImage:"url("+flowerPic+")",
                   backgroundSize:'cover'}}>
                     {tenRecent.map(this.render10Recent)}
                   </div>
-                  
+                  <p style={{color: 'red', backgroundColor: 'black', opacity: '0.8', fontSize: '20px'}}>Scroll up and down to view the list of flowers available in the database. 
+                  Click on a flower in the table to the left.
+                  The table on the right displays the 10 most recent sightings of a flower. 
+                  Click on the 'Edit Flower' button the change the genus, species and common name of the flowers.
+                  Click on the 'New Sighting' button to insert a new sighting of a flower into the database.
+                    
+                  </p>
                 </Col>
+                
               </Row>
+              <Col xs={6}>
+              <img width='700px' height='500px' src={flowerPic}/>
+                
+                </Col>
             </Col>
             <Col xs={1}/>
           </Row>
@@ -244,8 +268,7 @@ class App extends React.Component {
     else {
       const largeStyle = {textAlign:'center', 
       fontWeight:'bold', color:'white',
-      textDecoration:'underline',
-      fontSize:'1.5rem'}
+      fontSize:'1.75rem', fontFamily: 'Times New Roman', opacity: '0.8'}
       var depends = () => {
         if (this.state.status !== 'Success, Logging in'){
           return 'red'
@@ -260,21 +283,22 @@ class App extends React.Component {
         height: '100vh', backgroundImage: "url("+loginBG+")", 
         backgroundSize:'cover', overflow:'hidden'}}>
           <Header />
-          <Row style={{minHeight:'1rem'}}/>
+          <Row style={{minHeight:'15rem'}}/>
           <Col xs={12}>
-            <Row>
+            <Row >
               <Col xs={3}/>
               <Col md={6}>
-                <Row>
+                <Row >
                   <Col style={largeStyle}>
-                    <p>Please Sign In with your First Name</p> 
+                    <p></p>
+                    <p>Sign In with your First Name</p> 
                   </Col>
                 </Row>
                 <Row>
                   <Col style={this.center}>
-                  <input name='name' value={this.state.name}
+                  <input name='name' value={this.state.name} title="First Name" 
                   style={{width:'50%',
-                  borderRadius:'0.25rem'}}
+                  borderRadius:'1rem'}}
                   onChange={this.handleChange}/>
                   </Col>
                 </Row>
@@ -288,7 +312,8 @@ class App extends React.Component {
                 </Row>
                 <Row>
                   <Col style={this.center}>
-                    <Button onClick={this.logInUser} style={{width:'50%'}}
+                    <Button onClick={this.logInUser} style={{width:'50%', borderRadius: '1rem', 
+                    fontFamily: 'Times New Roman', backgroundColor: '#1e1e2f', borderColor: '#1e1e2f'}}
                     >Sign In</Button>
                   </Col>
                   
@@ -296,7 +321,15 @@ class App extends React.Component {
                 <Row>
                   <Col style={largeStyle}>
                     <p>or</p>
-                    <Button onClick={this.logInGuest} style={{width:'50%'}}
+                    
+                  </Col>
+                </Row>
+                <Row>
+                  <Col style={{textAlign:'center', 
+      fontWeight:'bold', color:'white',
+      textDecoration:'underline',
+      fontSize:'2.0rem', fontFamily: 'Times New Roman'}}>
+                    <Button onClick={this.logInGuest} style={{width:'50%', borderRadius: '1rem', backgroundColor: '#1e1e2f', borderColor: '#1e1e2f'}}
                     >Continue As Guest</Button>
                   </Col>
                 </Row>

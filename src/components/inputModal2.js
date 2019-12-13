@@ -104,10 +104,10 @@ class inputModal extends React.Component {
   return (
     <div>
       <Button onClick={this.openModal}
-      style={{color: 'black', 
-      backgroundColor: '#FAC363', 
+      style={{color: 'white', fontFamily: 'Times New Roman',
+      backgroundColor: '#1e1e2f', 
       fontWeight: 'bold', 
-      borderColor: '#DF9107'}}>
+      borderColor: '#1e1e2f'}}>
         Edit Flower</Button>
       <Modal
           isOpen={this.state.modalIsOpen}
